@@ -20,5 +20,5 @@ func init() {
 		Timestamp().
 		Logger()
 	Log = &l
-	Log.Info().Msg("Logger configured")
+	Log.Info().Msg("logger configured")
 }

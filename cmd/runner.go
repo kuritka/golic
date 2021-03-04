@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"gext/guard"
+	"github.com/kuritka/golic/utils/guard"
 )
 
 type Service interface {

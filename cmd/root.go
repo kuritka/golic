@@ -21,13 +21,13 @@ var rootCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			logger.Error().Msg("No parameters included")
+			logger.Error().Msg("no parameters included")
 			_ = cmd.Help()
 			os.Exit(0)
 		}
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
-		logger.Info().Msg("done..")
+		logger.Info().Msg("done")
 	},
 }
 

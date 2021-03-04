@@ -13,7 +13,6 @@ var injectCmd = &cobra.Command{
 	Long:  ``,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Info().Msg("inject started")
 		i := inject.New(ctx, injectOptions)
 		Command(i).MustRun()
 
