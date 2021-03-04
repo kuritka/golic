@@ -3,15 +3,16 @@ package inject
 import (
 	"context"
 	"fmt"
-	"github.com/kuritka/golic/utils/log"
 	"io/ioutil"
+
+	"github.com/kuritka/golic/utils/log"
 
 	"github.com/denormal/go-gitignore"
 )
 
 type Inject struct {
-	opts Options
-	ctx  context.Context
+	opts   Options
+	ctx    context.Context
 	ignore gitignore.GitIgnore
 }
 
@@ -25,7 +26,7 @@ func New(ctx context.Context, options Options) *Inject {
 }
 
 func (i *Inject) Run() (err error) {
-	logger.Info().Msgf("reading %s",i.opts.License)
+	logger.Info().Msgf("reading %s", i.opts.License)
 	i.ignore, err = gitignore.NewFromFile(i.opts.License)
 	if err != nil {
 		return err
@@ -41,9 +42,9 @@ func (i *Inject) String() string {
 func (i *Inject) traverse() {
 	p := func(path string, i gitignore.GitIgnore) {
 		if i.Ignore(path) {
-			fmt.Println(" + " + path)
-		} else {
 			fmt.Println(" - " + path)
+		} else {
+			fmt.Println(" + " + path)
 		}
 	}
 
@@ -54,7 +55,7 @@ func (i *Inject) traverse() {
 			for _, subitem := range subitems {
 				if !subitem.IsDir() {
 					// handle file there
-					p(item.Name() + "/" + subitem.Name(), i.ignore)
+					p(item.Name()+"/"+subitem.Name(), i.ignore)
 				}
 			}
 		} else {

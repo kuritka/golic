@@ -2,10 +2,10 @@
 package guard
 
 import (
-	"github.com/kuritka/golic/utils/log"
 	"net/http"
 	"os"
 
+	"github.com/kuritka/golic/utils/log"
 )
 
 var logger = log.Log
