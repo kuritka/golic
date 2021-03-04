@@ -1,0 +1,2 @@
+# golic
+license appender
