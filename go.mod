@@ -1,5 +1,9 @@
 module github.com/kuritka/golic
 
-go 1.16
+go 1.15
 
-require github.com/denormal/go-gitignore v0.0.0-20180930084346-ae8ad1d07817
+require (
+	github.com/kuritka/gsvc v0.0.0-20200307123456-5d0949ac0696
+	github.com/rs/zerolog v1.20.0
+	github.com/spf13/cobra v1.1.3
+)
