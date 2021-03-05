@@ -3,7 +3,8 @@ package inject
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"os"
+	"path/filepath"
 
 	"github.com/kuritka/golic/utils/log"
 
@@ -48,19 +49,34 @@ func (i *Inject) traverse() {
 		}
 	}
 
-	items, _ := ioutil.ReadDir(".")
-	for _, item := range items {
-		if item.IsDir() {
-			subitems, _ := ioutil.ReadDir(item.Name())
-			for _, subitem := range subitems {
-				if !subitem.IsDir() {
-					// handle file there
-					p(item.Name()+"/"+subitem.Name(), i.ignore)
-				}
+	err := filepath.Walk("./",
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
 			}
-		} else {
-			// handle file there
-			p(item.Name(), i.ignore)
-		}
+			if !info.IsDir() {
+				p(path, i.ignore)
+			}
+			return nil
+		})
+	if err != nil {
+		logger.Err(err).Msg("")
 	}
+
+	//
+	//items, _ := ioutil.ReadDir(".")
+	//for _, item := range items {
+	//	if item.IsDir() {
+	//		subitems, _ := ioutil.ReadDir(item.Name())
+	//		for _, subitem := range subitems {
+	//			if !subitem.IsDir() {
+	//				// handle file there
+	//				p(item.Name()+"/"+subitem.Name(), i.ignore)
+	//			}
+	//		}
+	//	} else {
+	//		// handle file there
+	//		p(item.Name(), i.ignore)
+	//	}
+	//}
 }
