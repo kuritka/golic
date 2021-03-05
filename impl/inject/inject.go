@@ -3,8 +3,10 @@ package inject
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/kuritka/golic/utils/log"
 
@@ -32,20 +34,31 @@ func (i *Inject) Run() (err error) {
 	if err != nil {
 		return err
 	}
-	i.traverse()
-	return nil
+	i.opts.template,err =  read(i.opts.Template)
+	if err == nil {
+		i.traverse()
+	}
+	return
 }
 
 func (i *Inject) String() string {
 	return "inject"
 }
 
+func read(f string) (s string, err error) {
+	content, err := ioutil.ReadFile(f)
+	if err != nil {
+		return
+	}
+	// Convert []byte to string and print to screen
+	return string(content), nil
+}
+
 func (i *Inject) traverse() {
-	p := func(path string, i gitignore.GitIgnore) {
-		if i.Ignore(path) {
-			fmt.Println(" - " + path)
-		} else {
+	p := func(path string, i gitignore.GitIgnore, o Options) {
+		if !i.Ignore(path) {
 			fmt.Println(" + " + path)
+			inject(path,o)
 		}
 	}
 
@@ -55,7 +68,7 @@ func (i *Inject) traverse() {
 				return err
 			}
 			if !info.IsDir() {
-				p(path, i.ignore)
+				p(path, i.ignore, i.opts)
 			}
 			return nil
 		})
@@ -63,20 +76,22 @@ func (i *Inject) traverse() {
 		logger.Err(err).Msg("")
 	}
 
-	//
-	//items, _ := ioutil.ReadDir(".")
-	//for _, item := range items {
-	//	if item.IsDir() {
-	//		subitems, _ := ioutil.ReadDir(item.Name())
-	//		for _, subitem := range subitems {
-	//			if !subitem.IsDir() {
-	//				// handle file there
-	//				p(item.Name()+"/"+subitem.Name(), i.ignore)
-	//			}
-	//		}
-	//	} else {
-	//		// handle file there
-	//		p(item.Name(), i.ignore)
-	//	}
-	//}
 }
+
+
+func inject(path string, o Options) (err error) {
+		c,err := read(path)
+		if err != nil {
+			return err
+		}
+		l := fmt.Sprintf("/*\n%s\n*/",o.template)
+		if strings.HasPrefix(c, l) {
+			fmt.Printf(" -> skip")
+		}
+		if !o.Dry {
+
+		}
+	return
+}
+
+

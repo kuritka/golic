@@ -4,7 +4,6 @@ import (
 	"github.com/kuritka/golic/impl/inject"
 	"github.com/spf13/cobra"
 	"os"
-	"time"
 )
 
 var injectOptions inject.Options
@@ -28,16 +27,14 @@ var injectCmd = &cobra.Command{
 
 		i := inject.New(ctx, injectOptions)
 		Command(i).MustRun()
-
 	},
 }
 
 func init() {
 	injectCmd.Flags().StringVarP(&injectOptions.License, "licignore", "l", "", ".licignore path")
 	injectCmd.Flags().StringVarP(&injectOptions.Template, "template", "t", "", "license template path")
-	injectCmd.Flags().IntVarP(&injectOptions.Year, "year", "y", time.Now().Year(), "year")
-	injectCmd.Flags().StringVarP(&injectOptions.Owner, "owner", "o", "",
-		"copyright owner or entity authorized by the copyright owner that is granting the License.")
+	injectCmd.Flags().StringVarP(&injectOptions.Copyright, "copyright", "c", "",
+		"e.g.: Copyright 2021 Absa Group Limited")
 	injectCmd.Flags().BoolVarP(&injectOptions.Dry, "dry", "d", false, "dry run")
 	rootCmd.AddCommand(injectCmd)
 }
