@@ -55,11 +55,12 @@ func read(f string) (s string, err error) {
 }
 
 func (i *Inject) traverse() {
-	p := func(path string, i gitignore.GitIgnore, o Options) {
+	p := func(path string, i gitignore.GitIgnore, o Options) (err error) {
 		if !i.Ignore(path) {
 			fmt.Println(" + " + path)
-			inject(path,o)
+			err = inject(path,o)
 		}
+		return
 	}
 
 	err := filepath.Walk("./",
@@ -68,29 +69,30 @@ func (i *Inject) traverse() {
 				return err
 			}
 			if !info.IsDir() {
-				p(path, i.ignore, i.opts)
+				return p(path, i.ignore, i.opts)
 			}
 			return nil
 		})
 	if err != nil {
 		logger.Err(err).Msg("")
 	}
-
 }
 
 
 func inject(path string, o Options) (err error) {
-		c,err := read(path)
-		if err != nil {
-			return err
-		}
-		l := fmt.Sprintf("/*\n%s\n*/",o.template)
-		if strings.HasPrefix(c, l) {
-			fmt.Printf(" -> skip")
-		}
-		if !o.Dry {
-
-		}
+	c,err := read(path)
+	if err != nil {
+		return err
+	}
+	l := fmt.Sprintf("/*\n%s\n*/",o.template)
+	if strings.HasPrefix(c, l) {
+		fmt.Printf(" -> skip")
+		return
+	}
+	if !o.Dry {
+		data := []byte(fmt.Sprintf("/*\n%s\n*/\n%s",o.template,c))
+		err = ioutil.WriteFile(path,data, os.ModeExclusive)
+	}
 	return
 }
 
