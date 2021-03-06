@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/kuritka/golic/impl/inject"
 	"github.com/spf13/cobra"
+	"net/url"
 	"os"
 )
 
@@ -24,7 +25,11 @@ var injectCmd = &cobra.Command{
 			_ = cmd.Help()
 			os.Exit(0)
 		}
-
+		if _,err := url.Parse(injectOptions.ConfigURL); err != nil {
+			logger.Error().Msgf("invalid config.yaml url '%s'",injectOptions.ConfigURL)
+			_ = cmd.Help()
+			os.Exit(0)
+		}
 		i := inject.New(ctx, injectOptions)
 		Command(i).MustRun()
 	},
@@ -36,5 +41,6 @@ func init() {
 	injectCmd.Flags().StringVarP(&injectOptions.Copyright, "copyright", "c", "",
 		"e.g.: Copyright 2021 Absa Group Limited")
 	injectCmd.Flags().BoolVarP(&injectOptions.Dry, "dry", "d", false, "dry run")
+	injectCmd.Flags().StringVarP(&injectOptions.ConfigURL, "config-url", "u", "https://github.com/kuritka/golic/config.yaml", "config URL")
 	rootCmd.AddCommand(injectCmd)
 }

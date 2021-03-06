@@ -3,7 +3,9 @@ package inject
 import (
 	"context"
 	"fmt"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -34,6 +36,11 @@ func (i *Inject) Run() (err error) {
 	if err != nil {
 		return err
 	}
+	var cfg *config
+	if cfg, err = i.readConfig(); err != nil {
+		return
+	}
+	fmt.Println(*cfg)
 	i.opts.template,err =  read(i.opts.Template)
 	if err == nil {
 		i.traverse()
@@ -96,4 +103,32 @@ func inject(path string, o Options) (err error) {
 	return
 }
 
+type config struct {
+	licenses []struct {
+		name string
+		text string
+	}
+	comments []struct {
+		extension string
+		comment string
+	}
+}
 
+func (i *Inject) readConfig() (c *config, err error) {
+	var client http.Client
+	var resp *http.Response
+	var b []byte
+	resp, err = client.Get(i.opts.ConfigURL)
+	if err != nil {
+		return
+	}
+	if resp.StatusCode >= http.StatusBadRequest {
+		return nil, fmt.Errorf("%s: %s returns %d", http.MethodGet, i.opts.ConfigURL, resp.StatusCode)
+	}
+	defer resp.Body.Close()
+	if b, err = ioutil.ReadAll(resp.Body); err != nil {
+		return
+	}
+	err = yaml.Unmarshal(b, c)
+	return
+}

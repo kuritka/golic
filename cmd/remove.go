@@ -3,9 +3,7 @@ package cmd
 import (
 	"os"
 
-
 	"github.com/kuritka/golic/impl/remove"
-	"github.com/kuritka/golic/impl/inject"
 	"github.com/spf13/cobra"
 )
 
@@ -28,16 +26,16 @@ var removeCmd = &cobra.Command{
 		//	os.Exit(0)
 		//}
 
-		i := inject.New(ctx, injectOptions)
-		Command(i).MustRun()
+		//i := inject.New(ctx, removeOptions)
+		//Command(i).MustRun()
 	},
 }
 
 func init() {
-	injectCmd.Flags().StringVarP(&injectOptions.License, "licignore", "l", "", ".licignore path")
-	injectCmd.Flags().StringVarP(&injectOptions.Template, "template", "t", "", "license template path")
-	injectCmd.Flags().StringVarP(&injectOptions.Copyright, "copyright", "c", "",
+	injectCmd.Flags().StringVarP(&removeOptions.License, "licignore", "l", "", ".licignore path")
+	injectCmd.Flags().StringVarP(&removeOptions.Template, "template", "t", "", "license template path")
+	injectCmd.Flags().StringVarP(&removeOptions.Copyright, "copyright", "c", "",
 		"e.g.: Copyright 2021 Absa Group Limited")
-	injectCmd.Flags().BoolVarP(&injectOptions.Dry, "dry", "d", false, "dry run")
-	rootCmd.AddCommand(injectCmd)
+	injectCmd.Flags().BoolVarP(&removeOptions.Dry, "dry", "d", false, "dry run")
+	rootCmd.AddCommand(removeCmd)
 }

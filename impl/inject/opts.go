@@ -6,4 +6,5 @@ type Options struct {
 	Template  string
 	Copyright string
 	Dry       bool
+	ConfigURL string
 }
