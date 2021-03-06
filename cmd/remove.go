@@ -1,15 +1,18 @@
 package cmd
 
 import (
+	"os"
+
+
+	"github.com/kuritka/golic/impl/remove"
 	"github.com/kuritka/golic/impl/inject"
 	"github.com/spf13/cobra"
-	"os"
 )
 
-var injectOptions inject.Options
+var removeOptions remove.Options
 
-var injectCmd = &cobra.Command{
-	Use:   "inject",
+var removeCmd = &cobra.Command{
+	Use:   "remove",
 	Short: "",
 	Long:  ``,
 
@@ -19,11 +22,11 @@ var injectCmd = &cobra.Command{
 			_ = cmd.Help()
 			os.Exit(0)
 		}
-		if _, err := os.Stat(injectOptions.Template); os.IsNotExist(err) {
-			logger.Error().Msgf("missing template path '%s'",injectOptions.Template)
-			_ = cmd.Help()
-			os.Exit(0)
-		}
+		//if _, err := os.Stat(injectOptions.Template); os.IsNotExist(err) {
+		//	logger.Error().Msgf("missing template path '%s'",injectOptions.Template)
+		//	_ = cmd.Help()
+		//	os.Exit(0)
+		//}
 
 		i := inject.New(ctx, injectOptions)
 		Command(i).MustRun()
