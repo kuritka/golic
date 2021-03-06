@@ -36,7 +36,7 @@ func (i *Inject) Run() (err error) {
 	if err != nil {
 		return err
 	}
-	var cfg *config
+	var cfg *Config
 	if cfg, err = i.readConfig(); err != nil {
 		return
 	}
@@ -103,28 +103,24 @@ func inject(path string, o Options) (err error) {
 	return
 }
 
-type license struct {
-	name string
-	text string
+
+type Config struct {
+	Golic struct{
+		Licenses map[string]string `yaml:"licenses"`
+		Comments []struct{
+			Extension string `yaml:"extension"`
+			CommentType string `yaml:"type"`
+			Prefix string `yaml:"prefix"`
+			Suffix string `yaml:"suffix"`
+		} `yaml:"comments"`
+	} `yaml:"golic"`
 }
 
-type comment struct {
-	extension string `yaml:"extension"`
-	comment string `yaml:"comment"`
-}
-
-type config struct {
-	golic struct {
-		licenses []license `yaml:licenses,flow`
-		comments []comment `yaml:comments,flow`
-	}
-}
-
-func (i *Inject) readConfig() (c *config, err error) {
+func (i *Inject) readConfig() (c *Config, err error) {
 	var client http.Client
 	var resp *http.Response
 	var b []byte
-	c = new(config)
+	c = new(Config)
 	resp, err = client.Get(i.opts.ConfigURL)
 	if err != nil {
 		return
