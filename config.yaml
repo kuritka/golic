@@ -1,7 +1,6 @@
 golic:
   licenses:
-    apache2:
-      text: >
+    apache2: >
         Copyright {{copyright}}
 
         Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@ golic:
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and
         limitations under the License.
-    copyright:
-      text: Copyright {{copyright}}
+    copyright: Copyright {{copyright}}
   comments:
     - extension: "go"
       comment: "//"
