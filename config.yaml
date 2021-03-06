@@ -1,6 +1,6 @@
 golic:
   licenses:
-    - name: Apache2
+    apache2:
       text: >
         Copyright {{copyright}}
 
@@ -15,15 +15,15 @@ golic:
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and
         limitations under the License.
-    - name: copyright
+    copyright:
       text: Copyright {{copyright}}
   comments:
     - extension: "go"
-    - comment: "//"
+      comment: "//"
     - extension: "java"
-    - comment: "//"
+      comment: "//"
     - extension: "cs"
-    - comment: "//"
+      comment: "//"
     - extension: "yaml"
       comment: "#"
     - extension: "yml"
@@ -31,8 +31,8 @@ golic:
     - extension: "Docker"
       comment: "#"
     - extension: "Makefile"
-    - comment: "##"
+      comment: "##"
     - extension: ".gitignore"
-    - comment: "#"
+      comment: "#"
     - extension: ".licignore"
-    - comment: "#"
+      comment: "#"

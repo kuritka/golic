@@ -103,14 +103,20 @@ func inject(path string, o Options) (err error) {
 	return
 }
 
+type license struct {
+	name string
+	text string
+}
+
+type comment struct {
+	extension string `yaml:"extension"`
+	comment string `yaml:"comment"`
+}
+
 type config struct {
-	licenses []struct {
-		name string
-		text string
-	}
-	comments []struct {
-		extension string
-		comment string
+	golic struct {
+		licenses []license `yaml:licenses,flow`
+		comments []comment `yaml:comments,flow`
 	}
 }
 
@@ -118,6 +124,7 @@ func (i *Inject) readConfig() (c *config, err error) {
 	var client http.Client
 	var resp *http.Response
 	var b []byte
+	c = new(config)
 	resp, err = client.Get(i.opts.ConfigURL)
 	if err != nil {
 		return

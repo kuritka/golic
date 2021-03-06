@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/kuritka/golic/impl/remove"
 	"github.com/spf13/cobra"
 )
@@ -15,11 +13,11 @@ var removeCmd = &cobra.Command{
 	Long:  ``,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		if _, err := os.Stat(injectOptions.License); os.IsNotExist(err) {
-			logger.Error().Msgf("invalid license path '%s'",injectOptions.License)
-			_ = cmd.Help()
-			os.Exit(0)
-		}
+		//if _, err := os.Stat(injectOptions.License); os.IsNotExist(err) {
+		//	logger.Error().Msgf("invalid license path '%s'",injectOptions.License)
+		//	_ = cmd.Help()
+		//	os.Exit(0)
+		//}
 		//if _, err := os.Stat(injectOptions.Template); os.IsNotExist(err) {
 		//	logger.Error().Msgf("missing template path '%s'",injectOptions.Template)
 		//	_ = cmd.Help()
@@ -32,10 +30,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	injectCmd.Flags().StringVarP(&removeOptions.License, "licignore", "l", "", ".licignore path")
-	injectCmd.Flags().StringVarP(&removeOptions.Template, "template", "t", "", "license template path")
-	injectCmd.Flags().StringVarP(&removeOptions.Copyright, "copyright", "c", "",
-		"e.g.: Copyright 2021 Absa Group Limited")
-	injectCmd.Flags().BoolVarP(&removeOptions.Dry, "dry", "d", false, "dry run")
 	rootCmd.AddCommand(removeCmd)
 }

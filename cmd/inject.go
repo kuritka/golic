@@ -41,6 +41,6 @@ func init() {
 	injectCmd.Flags().StringVarP(&injectOptions.Copyright, "copyright", "c", "",
 		"e.g.: Copyright 2021 Absa Group Limited")
 	injectCmd.Flags().BoolVarP(&injectOptions.Dry, "dry", "d", false, "dry run")
-	injectCmd.Flags().StringVarP(&injectOptions.ConfigURL, "config-url", "u", "https://github.com/kuritka/golic/config.yaml", "config URL")
+	injectCmd.Flags().StringVarP(&injectOptions.ConfigURL, "config-url", "u", "https://raw.githubusercontent.com/kuritka/golic/main/config.yaml", "config URL")
 	rootCmd.AddCommand(injectCmd)
 }
