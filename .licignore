@@ -3,13 +3,16 @@
 
 # But not these files...
 
-*.yaml
-*.go
+!*.yaml
+!*.go
 !run.sh
+!Makefile
+!xx.xml
+!xy.xml
 
 # ...even if they are in subdirectories
 !*/
 
 # except these in subdirs
 /**/.gitignore
-/**/*.xml
+/.idea/**/*.xml
