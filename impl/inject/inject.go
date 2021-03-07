@@ -96,7 +96,7 @@ func inject(path string, o Options, config *Config) (err error) {
 		return
 	}
 	if !o.Dry {
-		data := []byte(fmt.Sprintf("%s\n\n%s",l,c))
+		data := []byte(fmt.Sprintf("%s%s",l,c))
 		err = ioutil.WriteFile(path,data, os.ModeExclusive)
 	}
 	return
@@ -109,6 +109,9 @@ func getCommentedLicense(config *Config, o Options, path string) (string, error)
 		return "",fmt.Errorf("no license found for %s, check configuration (%s)",o.Template,o.ConfigURL)
 	}
 	rule := filepath.Ext(path)
+	if rule == "" {
+		rule = filepath.Base(path)
+	}
 	if _, ok = config.Golic.Rules[rule]; !ok {
 		return "",fmt.Errorf("no rule found for %s, check configuration (%s)", rule,o.ConfigURL)
 	}
