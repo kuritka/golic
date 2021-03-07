@@ -102,8 +102,11 @@ func inject(path string, o Options, config *Config) (err error, skip bool) {
 		// file is not empty and file contains header
 		if  headerContains(l1, config.Golic.Rules[rule].Under) {
 			license = fmt.Sprintf("%s\n%s", l1, license)
+			if strings.HasPrefix(source, license) {
+				return nil, true
+			}
+			source = lx
 		}
-		source = lx
 	}
 	if strings.HasPrefix(source, license) {
 		return nil, true

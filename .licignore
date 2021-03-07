@@ -4,7 +4,8 @@
 # But not these files...
 
 *.yaml
-!*.go
+*.go
+!run.sh
 
 # ...even if they are in subdirectories
 !*/
