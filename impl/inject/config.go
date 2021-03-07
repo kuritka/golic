@@ -12,5 +12,5 @@ type Config struct {
 
 
 func (c *Config) IsWrapped(key string) bool {
-	return c.Golic.Rules[key].Suffix == ""
+	return c.Golic.Rules[key].Suffix != ""
 }
