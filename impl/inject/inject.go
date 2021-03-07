@@ -61,8 +61,12 @@ func read(f string) (s string, err error) {
 func (i *Inject) traverse() {
 	p := func(path string, i gitignore.GitIgnore, o Options, config *Config) (err error) {
 		if !i.Ignore(path) {
-			fmt.Println(" + " + path)
-			err = inject(path,o, config)
+			fmt.Printf(" + " + path)
+			var skip bool
+			if err,skip  = inject(path,o, config); skip {
+				fmt.Printf(" -> skip")
+			}
+			fmt.Println()
 		}
 		return
 	}
@@ -82,18 +86,17 @@ func (i *Inject) traverse() {
 	}
 }
 
-func inject(path string, o Options, config *Config) (err error) {
+func inject(path string, o Options, config *Config) (err error, skip bool) {
 	c,err := read(path)
 	if err != nil {
-		return err
+		return err,false
 	}
 	l,err := getCommentedLicense(config,o,path)
 	if err != nil {
-		return err
+		return err, false
 	}
 	if strings.HasPrefix(c, l) {
-		fmt.Printf(" -> skip")
-		return
+		return nil, true
 	}
 	if !o.Dry {
 		data := []byte(fmt.Sprintf("%s%s",l,c))
