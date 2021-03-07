@@ -20,11 +20,6 @@ var injectCmd = &cobra.Command{
 			_ = cmd.Help()
 			os.Exit(0)
 		}
-		if _, err := os.Stat(injectOptions.Template); os.IsNotExist(err) {
-			logger.Error().Msgf("missing template path '%s'",injectOptions.Template)
-			_ = cmd.Help()
-			os.Exit(0)
-		}
 		if _,err := url.Parse(injectOptions.ConfigURL); err != nil {
 			logger.Error().Msgf("invalid config.yaml url '%s'",injectOptions.ConfigURL)
 			_ = cmd.Help()

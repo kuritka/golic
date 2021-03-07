@@ -16,27 +16,27 @@ golic:
         limitations under the License.
     copyright: "Copyright {{copyright}}"
   rules:
-    go:
+    .go:
       prefix: "/*"
       suffix: "*/"
-    java:
+    .java:
       prefix: "/*"
       suffix: "*/"
-    cs:
+    .cs:
       prefix: "/*"
       suffix: "*/"
-    html:
+    .html:
       prefix: "<!--"
       suffix: "-->"
-    js:
+    .js:
       prefix: "/*"
       suffix: "*/"
-    css:
+    .css:
       prefix: "/*"
       suffix: "*/"
-    yaml:
+    .yaml:
       prefix: "#"
-    yml:
+    .yml:
       prefix: "#"
     Dockerfile:
       prefix: "#"
