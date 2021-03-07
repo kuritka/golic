@@ -113,6 +113,7 @@ func getCommentedLicense(config *Config, o Options, path string) (string, error)
 	if _, ok = config.Golic.Rules[rule]; !ok {
 		return "",fmt.Errorf("no rule found for %s, check configuration (%s)", rule,o.ConfigURL)
 	}
+	template = strings.ReplaceAll(template,"{{copyright}}", o.Copyright)
 	if config.IsWrapped(rule) {
 		return fmt.Sprintf("%s\n%s%s",
 			config.Golic.Rules[rule].Prefix,
@@ -122,10 +123,7 @@ func getCommentedLicense(config *Config, o Options, path string) (string, error)
 	}
 	// `\r\n` -> `\r\n #`, `\n` -> `\n #`
 	return strings.ReplaceAll(
-		fmt.Sprintf("\n%s ", config.Golic.Rules[rule].Prefix),
-		"\n",
-		template),
-		nil
+		template,"\n",fmt.Sprintf("\n%s ", config.Golic.Rules[rule].Prefix)), nil
 }
 
 func (i *Inject) readConfig() (c *Config, err error) {
