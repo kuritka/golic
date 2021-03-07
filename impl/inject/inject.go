@@ -85,7 +85,6 @@ func (i *Inject) traverse() {
 	}
 }
 
-
 func inject(path string, o Options) (err error) {
 	c,err := read(path)
 	if err != nil {
