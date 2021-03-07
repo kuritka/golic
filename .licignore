@@ -9,5 +9,6 @@
 # ...even if they are in subdirectories
 !*/
 
-# except gitignore
+# except these in subdirs
 /**/.gitignore
+/**/*.xml
