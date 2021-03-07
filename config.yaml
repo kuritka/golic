@@ -56,9 +56,9 @@ golic:
       under:
         - "!/bin/sh"
         - "!/bin/bash"
-        - "#!/bin/ksh"
-        - "#!/bin/awk"
-        - "#!/bin/expect"
+        - "!/bin/ksh"
+        - "!/bin/awk"
+        - "!/bin/expect"
         - "!/bin/csh"
         - "!/usr/bin/perl"
         - "!/usr/bin/python"
