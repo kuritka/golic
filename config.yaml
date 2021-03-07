@@ -16,39 +16,30 @@ golic:
         limitations under the License.
     copyright: "Copyright {{copyright}}"
   comments:
-    - extension: "go"
+    go:
       prefix: "/*"
       suffix: "*/"
-      type: "wrap"
-    - extension: "java"
+    java:
       prefix: "/*"
       suffix: "*/"
-      type: "wrap"
-    - extension: "cs"
+    cs:
       prefix: "/*"
       suffix: "*/"
-      type: "wrap"
-    - extension: "html"
+    html:
       prefix: "<!--"
       suffix: "-->"
-      type: "wrap"
-    - extension: "yaml"
-      type: "beginning"
+    js:
+      prefix: "/*"
+      suffix: "*/"
+    yaml:
       prefix: "#"
-    - extension: "yml"
-      type: "beginning"
+    yml:
       prefix: "#"
-    - extension: "Docker"
-      type: "beginning"
+    Dockerfile:
       prefix: "#"
-    - extension: "Makefile"
-      type: "beginning"
+    Makefile:
       prefix: "#"
-    - extension: ".gitignore"
-      type: "beginning"
+    .gitignore:
       prefix: "#"
-    - extension: ".licignore"
-      type: "beginning"
+    .licignore:
       prefix: "#"
-
-

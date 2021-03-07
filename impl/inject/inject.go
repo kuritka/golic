@@ -103,19 +103,6 @@ func inject(path string, o Options) (err error) {
 	return
 }
 
-
-type Config struct {
-	Golic struct{
-		Licenses map[string]string `yaml:"licenses"`
-		Comments []struct{
-			Extension string `yaml:"extension"`
-			CommentType string `yaml:"type"`
-			Prefix string `yaml:"prefix"`
-			Suffix string `yaml:"suffix"`
-		} `yaml:"comments"`
-	} `yaml:"golic"`
-}
-
 func (i *Inject) readConfig() (c *Config, err error) {
 	var client http.Client
 	var resp *http.Response
