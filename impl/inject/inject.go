@@ -117,7 +117,7 @@ func getCommentedLicense(config *Config, o Options, path string) (string, error)
 	}
 	template = strings.ReplaceAll(template,"{{copyright}}", o.Copyright)
 	if config.IsWrapped(rule) {
-		return fmt.Sprintf("%s\n%s%s",
+		return fmt.Sprintf("%s\n%s%s\n",
 			config.Golic.Rules[rule].Prefix,
 			template,
 			config.Golic.Rules[rule].Suffix),
