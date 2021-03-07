@@ -102,7 +102,6 @@ func inject(path string, o Options, config *Config) (err error) {
 	return
 }
 
-
 func getCommentedLicense(config *Config, o Options, path string) (string, error) {
 	var ok bool
 	var template string
@@ -122,8 +121,9 @@ func getCommentedLicense(config *Config, o Options, path string) (string, error)
 			nil
 	}
 	// `\r\n` -> `\r\n #`, `\n` -> `\n #`
-	return strings.ReplaceAll(
-		template,"\n",fmt.Sprintf("\n%s ", config.Golic.Rules[rule].Prefix)), nil
+	content := strings.ReplaceAll(template,"\n",fmt.Sprintf("\n%s ", config.Golic.Rules[rule].Prefix))
+	content = strings.TrimSuffix(content, config.Golic.Rules[rule].Prefix+" ")
+	return config.Golic.Rules[rule].Prefix + " " + content,nil
 }
 
 func (i *Inject) readConfig() (c *Config, err error) {
