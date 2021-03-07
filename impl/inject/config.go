@@ -15,3 +15,7 @@ type Config struct {
 func (c *Config) IsWrapped(key string) bool {
 	return c.Golic.Rules[key].Suffix != ""
 }
+
+func (c *Config) IsUnder(key string) bool {
+	return len(c.Golic.Rules[key].Under) > 0
+}

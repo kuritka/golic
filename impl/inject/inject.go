@@ -87,19 +87,19 @@ func (i *Inject) traverse() {
 }
 
 func inject(path string, o Options, config *Config) (err error, skip bool) {
-	c,err := read(path)
+	source,err := read(path)
 	if err != nil {
 		return err,false
 	}
-	l,err := getCommentedLicense(config,o,path)
+	license,err := getCommentedLicense(config,o,path)
 	if err != nil {
 		return err, false
 	}
-	if strings.HasPrefix(c, l) {
+	if strings.HasPrefix(source, license) {
 		return nil, true
 	}
 	if !o.Dry {
-		data := []byte(fmt.Sprintf("%s%s",l,c))
+		data := []byte(fmt.Sprintf("%s%s", license, source))
 		err = ioutil.WriteFile(path,data, os.ModeExclusive)
 	}
 	return
