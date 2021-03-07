@@ -15,8 +15,8 @@ var injectCmd = &cobra.Command{
 	Long:  ``,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		if _, err := os.Stat(injectOptions.License); os.IsNotExist(err) {
-			logger.Error().Msgf("invalid license path '%s'",injectOptions.License)
+		if _, err := os.Stat(injectOptions.LicIgnore); os.IsNotExist(err) {
+			logger.Error().Msgf("invalid license path '%s'",injectOptions.LicIgnore)
 			_ = cmd.Help()
 			os.Exit(0)
 		}
@@ -36,10 +36,10 @@ var injectCmd = &cobra.Command{
 }
 
 func init() {
-	injectCmd.Flags().StringVarP(&injectOptions.License, "licignore", "l", "", ".licignore path")
-	injectCmd.Flags().StringVarP(&injectOptions.Template, "template", "t", "", "license template path")
+	injectCmd.Flags().StringVarP(&injectOptions.LicIgnore, "licignore", "l", "", ".licignore path")
+	injectCmd.Flags().StringVarP(&injectOptions.Template, "template", "t", "apache2", "license key")
 	injectCmd.Flags().StringVarP(&injectOptions.Copyright, "copyright", "c", "",
-		"e.g.: Copyright 2021 Absa Group Limited")
+		"e.g.: Copyright 2021 MyCompany Group Limited")
 	injectCmd.Flags().BoolVarP(&injectOptions.Dry, "dry", "d", false, "dry run")
 	injectCmd.Flags().StringVarP(&injectOptions.ConfigURL, "config-url", "u", "https://raw.githubusercontent.com/kuritka/golic/main/config.yaml", "config URL")
 	rootCmd.AddCommand(injectCmd)

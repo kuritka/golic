@@ -19,6 +19,7 @@ type Inject struct {
 	opts   Options
 	ctx    context.Context
 	ignore gitignore.GitIgnore
+	cfg *Config
 }
 
 var logger = log.Log
@@ -31,20 +32,16 @@ func New(ctx context.Context, options Options) *Inject {
 }
 
 func (i *Inject) Run() (err error) {
-	logger.Info().Msgf("reading %s", i.opts.License)
-	i.ignore, err = gitignore.NewFromFile(i.opts.License)
+	logger.Info().Msgf("reading %s", i.opts.LicIgnore)
+	i.ignore, err = gitignore.NewFromFile(i.opts.LicIgnore)
 	if err != nil {
 		return err
 	}
-	var cfg *Config
-	if cfg, err = i.readConfig(); err != nil {
+	logger.Info().Msgf("reading %s", i.opts.ConfigURL)
+	if i.cfg, err = i.readConfig(); err != nil {
 		return
 	}
-	fmt.Println(*cfg)
-	i.opts.template,err =  read(i.opts.Template)
-	if err == nil {
-		i.traverse()
-	}
+	i.traverse()
 	return
 }
 
@@ -62,10 +59,10 @@ func read(f string) (s string, err error) {
 }
 
 func (i *Inject) traverse() {
-	p := func(path string, i gitignore.GitIgnore, o Options) (err error) {
+	p := func(path string, i gitignore.GitIgnore, o Options, config *Config) (err error) {
 		if !i.Ignore(path) {
 			fmt.Println(" + " + path)
-			err = inject(path,o)
+			err = inject(path,o, config)
 		}
 		return
 	}
@@ -76,7 +73,7 @@ func (i *Inject) traverse() {
 				return err
 			}
 			if !info.IsDir() {
-				return p(path, i.ignore, i.opts)
+				return p(path, i.ignore, i.opts, i.cfg)
 			}
 			return nil
 		})
@@ -85,21 +82,49 @@ func (i *Inject) traverse() {
 	}
 }
 
-func inject(path string, o Options) (err error) {
+func inject(path string, o Options, config *Config) (err error) {
 	c,err := read(path)
 	if err != nil {
 		return err
 	}
-	l := fmt.Sprintf("/*\n%s\n*/",o.template)
+	l,err := getCommentedLicense(config,o,path)
+	if err != nil {
+		return err
+	}
 	if strings.HasPrefix(c, l) {
 		fmt.Printf(" -> skip")
 		return
 	}
 	if !o.Dry {
-		data := []byte(fmt.Sprintf("/*\n%s\n*/\n%s",o.template,c))
-		err = ioutil.WriteFile(path,data, os.ModeExclusive)
+		err = ioutil.WriteFile(path,[]byte(l), os.ModeExclusive)
 	}
 	return
+}
+
+
+func getCommentedLicense(config *Config, o Options, path string) (string, error) {
+	var ok bool
+	var template string
+	if template, ok = config.Golic.Licenses[o.Template]; !ok {
+		return "",fmt.Errorf("no license found for %s, check configuration (%s)",o.Template,o.ConfigURL)
+	}
+	rule := filepath.Ext(path)
+	if _, ok = config.Golic.Rules[rule]; !ok {
+		return "",fmt.Errorf("no rule found for %s, check configuration (%s)", rule,o.ConfigURL)
+	}
+	if config.IsWrapped(rule) {
+		return fmt.Sprintf("%s\n%s\n%s",
+			config.Golic.Rules[rule].Prefix,
+			template,
+			config.Golic.Rules[rule].Suffix),
+			nil
+	}
+		// `\r\n` -> `\r\n #`, `\n` -> `\n #`
+		return strings.ReplaceAll(
+			fmt.Sprintf("\n%s ", config.Golic.Rules[rule].Prefix),
+			"\n",
+			template),
+			nil
 }
 
 func (i *Inject) readConfig() (c *Config, err error) {

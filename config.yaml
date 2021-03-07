@@ -31,6 +31,9 @@ golic:
     js:
       prefix: "/*"
       suffix: "*/"
+    css:
+      prefix: "/*"
+      suffix: "*/"
     yaml:
       prefix: "#"
     yml:
