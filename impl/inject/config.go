@@ -6,7 +6,7 @@ type Config struct {
 		Rules    map[string]struct {
 			Prefix string `yaml:"prefix"`
 			Suffix string `yaml:"suffix"`
-			Under string `yaml:"under"`
+			Under []string `yaml:"under"`
 		} `yaml:"rules"`
 	} `yaml:"golic"`
 }
