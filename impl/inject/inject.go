@@ -96,7 +96,8 @@ func inject(path string, o Options, config *Config) (err error) {
 		return
 	}
 	if !o.Dry {
-		err = ioutil.WriteFile(path,[]byte(l), os.ModeExclusive)
+		data := []byte(fmt.Sprintf("%s\n%s",l,c))
+		err = ioutil.WriteFile(path,data, os.ModeExclusive)
 	}
 	return
 }
