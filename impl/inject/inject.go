@@ -91,9 +91,19 @@ func inject(path string, o Options, config *Config) (err error, skip bool) {
 	if err != nil {
 		return err,false
 	}
-	license,err := getCommentedLicense(config,o,path)
+	rule := getRule(path)
+	license,err := getCommentedLicense(config, o, rule)
 	if err != nil {
 		return err, false
+	}
+	if config.LicenseStartsAfterHeader(rule) {
+		// gets first line of source and the rest of source code
+		l1, lx := splitSource(source)
+		// file is not empty and file contains header
+		if  headerContains(l1, config.Golic.Rules[rule].Under) {
+			license = fmt.Sprintf("%s\n%s", l1, license)
+		}
+		source = lx
 	}
 	if strings.HasPrefix(source, license) {
 		return nil, true
@@ -105,15 +115,20 @@ func inject(path string, o Options, config *Config) (err error, skip bool) {
 	return
 }
 
-func getCommentedLicense(config *Config, o Options, path string) (string, error) {
+func headerContains(header string, values []string) bool{
+	for _,v := range values {
+		if strings.Contains(header, v) {
+			return true
+		}
+	}
+	return false
+}
+
+func getCommentedLicense(config *Config, o Options, rule string) (string, error) {
 	var ok bool
 	var template string
 	if template, ok = config.Golic.Licenses[o.Template]; !ok {
 		return "",fmt.Errorf("no license found for %s, check configuration (%s)",o.Template,o.ConfigURL)
-	}
-	rule := filepath.Ext(path)
-	if rule == "" {
-		rule = filepath.Base(path)
 	}
 	if _, ok = config.Golic.Rules[rule]; !ok {
 		return "",fmt.Errorf("no rule found for %s, check configuration (%s)", rule,o.ConfigURL)
@@ -130,6 +145,24 @@ func getCommentedLicense(config *Config, o Options, path string) (string, error)
 	content := strings.ReplaceAll(template,"\n",fmt.Sprintf("\n%s ", config.Golic.Rules[rule].Prefix))
 	content = strings.TrimSuffix(content, config.Golic.Rules[rule].Prefix+" ")
 	return config.Golic.Rules[rule].Prefix + " " + content,nil
+}
+
+func splitSource(source string) (firstLine, rest string){
+	lines := strings.Split(source,"\n")
+	if len(lines) > 0 {
+		firstLine = lines[0]
+		rest = strings.Join(lines[1:],"\n")
+		return
+	}
+	return "",source
+}
+
+func getRule(path string) (rule string) {
+	rule = filepath.Ext(path)
+	if rule == "" {
+		rule = filepath.Base(path)
+	}
+	return
 }
 
 func (i *Inject) readConfig() (c *Config, err error) {
