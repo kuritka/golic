@@ -1,5 +1,6 @@
 # golic
 license generator
+`golic inject -c="2021 Absa Group Limited" -l=.licignore --dry`
 ![Screenshot 2021-03-08 at 11 42 52](https://user-images.githubusercontent.com/7195836/110310942-6d2f3680-8003-11eb-9540-b2e21b4f2b87.png)
 
 
@@ -7,7 +8,6 @@ license generator
 
 create `.golicignore`
 ```shell
-cat .golicignore <<EOF
 # Ignore everything
 *
 
@@ -17,7 +17,6 @@ cat .golicignore <<EOF
 
 # ...even if they are in subdirectories
 !*/
-EOF
 ````
 And run **GOLIC**
 ```shell
@@ -26,7 +25,7 @@ $(GOBIN)/golic inject -c="2021 MyCompany Group Limited" -l=.golicignore
 ```
 
 
-# Usage
+## Usage
 ```shell
 Usage:
    inject [flags]
@@ -43,5 +42,7 @@ Global Flags:
   -v, --verbose   verbose output
 ```
 
-# Configuration
-For more details see: [default configuration](https://raw.githubusercontent.com/kuritka/golic/main/config.yaml)
+## Configuration
+For more details see: [default configuration](https://raw.githubusercontent.com/kuritka/golic/main/config.yaml). 
+Use `-u` flag to run against custom configuration or create PR. 
+
