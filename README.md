@@ -1,5 +1,7 @@
 # golic
 license generator
+![Screenshot 2021-03-08 at 11 42 52](https://user-images.githubusercontent.com/7195836/110310942-6d2f3680-8003-11eb-9540-b2e21b4f2b87.png)
+
 
 ## Running from commandline
 
