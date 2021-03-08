@@ -5,7 +5,6 @@ license generator
 
 create `.golicignore`
 ```shell
-vim .golicignore
 cat .golicignore <<EOF
 # Ignore everything
 *
