@@ -22,3 +22,24 @@ And run **GOLIC**
 GO111MODULE=on go get github.com/kuritka/golic@v0.1.0
 $(GOBIN)/golic inject -c="2021 MyCompany Group Limited" -l=.golicignore
 ```
+
+
+# Usage
+```shell
+Usage:
+   inject [flags]
+
+Flags:
+  -u, --config-url string   config URL (default "https://raw.githubusercontent.com/kuritka/golic/main/config.yaml")
+  -c, --copyright string    company initials entered into license (default "2021 MyCompany")
+  -d, --dry                 dry run
+  -h, --help                help for inject
+  -l, --licignore string    .licignore path
+  -t, --template string     license key (default "apache2")
+
+Global Flags:
+  -v, --verbose   verbose output
+```
+
+# Configuration
+For more details see: [default configuration](https://raw.githubusercontent.com/kuritka/golic/main/config.yaml)
