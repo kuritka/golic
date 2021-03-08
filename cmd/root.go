@@ -3,6 +3,8 @@ package cmd
 
 import (
 	"context"
+	"fmt"
+	"github.com/enescakir/emoji"
 	"os"
 
 	"github.com/kuritka/golic/utils/log"
@@ -27,7 +29,7 @@ var rootCmd = &cobra.Command{
 		}
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
-		logger.Info().Msg("done")
+		logger.Info().Msgf("done %3s%s%s", emoji.Rocket,emoji.Rocket,emoji.Rocket)
 	},
 }
 
@@ -36,6 +38,7 @@ func init() {
 }
 
 func Execute() {
+	fmt.Println()
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}

@@ -1,6 +1,41 @@
 # golic
-license appender
+license generator
 
+## Running from commandline
+
+```shell
+    vim .golicignore
+    cat .golicignore <<EOF
+# Ignore everything
+*
+
+# But not these files...
+!CODEOWNERS
+!LICENSE
+!README.md
+!.gitignore
+!.licignore
+!.golangci
+!*.yaml
+!Makefile
+!*.go
+!go.mod
+!go.sum
+
+# ...even if they are in subdirectories
+!*/
+
+# except gitignore
+/**/.gitignore
+EOF
+    
+    GO111MODULE=on go get github.com/kuritka/golic@v0.1.0
+	$(GOBIN)/golic inject -c="2021 MyCompany Group Limited" -l=.licignore
+	
+	
+```
+
+## Running as go generator
 ## 1. Add generator marks into project main package
 ```go
 package main

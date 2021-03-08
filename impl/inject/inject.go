@@ -3,6 +3,8 @@ package inject
 import (
 	"context"
 	"fmt"
+	"github.com/enescakir/emoji"
+	"github.com/logrusorgru/aurora"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"net/http"
@@ -32,12 +34,12 @@ func New(ctx context.Context, options Options) *Inject {
 }
 
 func (i *Inject) Run() (err error) {
-	logger.Info().Msgf("reading %s", i.opts.LicIgnore)
+	logger.Info().Msgf("%s reading %s",emoji.OpenBook, i.opts.LicIgnore)
 	i.ignore, err = gitignore.NewFromFile(i.opts.LicIgnore)
 	if err != nil {
 		return err
 	}
-	logger.Info().Msgf("reading %s", i.opts.ConfigURL)
+	logger.Info().Msgf("%s reading %s",emoji.OpenBook, i.opts.ConfigURL)
 	if i.cfg, err = i.readConfig(); err != nil {
 		return
 	}
@@ -46,7 +48,7 @@ func (i *Inject) Run() (err error) {
 }
 
 func (i *Inject) String() string {
-	return "inject"
+	return aurora.BrightCyan("inject").String()
 }
 
 func read(f string) (s string, err error) {
@@ -61,12 +63,12 @@ func read(f string) (s string, err error) {
 func (i *Inject) traverse() {
 	p := func(path string, i gitignore.GitIgnore, o Options, config *Config) (err error) {
 		if !i.Ignore(path) {
-			fmt.Printf(" + " + path)
 			var skip bool
+			symbol := ""
 			if err,skip  = inject(path,o, config); skip {
-				fmt.Printf(" -> skip")
+				symbol = "-> skip"
 			}
-			fmt.Println()
+			emoji.Printf(" %s  %s %s  \n",emoji.Minus, aurora.BrightYellow(path), aurora.BrightMagenta(symbol))
 		}
 		return
 	}
